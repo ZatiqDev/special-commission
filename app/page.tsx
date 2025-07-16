@@ -1,5 +1,5 @@
-import Index from "./_components";
+import { AuthWrapper } from "@/components/auth/AuthWrapper";
 
 export default function Home() {
-  return <Index />;
+  return <AuthWrapper />;
 }

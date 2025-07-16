@@ -5,8 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
+interface User {
+  id: number;
+  username: string;
+  role: string;
+  name: string;
+  email: string;
+}
+
 interface LoginProps {
-  onLogin: (user: { id: number; username: string; role: string }) => void;
+  onLogin: (user: User) => void;
 }
 
 export const Login = ({ onLogin }: LoginProps) => {
