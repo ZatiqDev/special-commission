@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 interface User {
   id: number;
@@ -21,7 +21,6 @@ export const Login = ({ onLogin }: LoginProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,23 +41,12 @@ export const Login = ({ onLogin }: LoginProps) => {
       if (data.success && data.user) {
         onLogin(data.user);
 
-        toast({
-          title: "Login Successful",
-          description: `Welcome back, ${data.user.username}!`,
-        });
+        toast.success(`Welcome back, ${data.user.username}!`);
       } else {
-        toast({
-          title: "Login Failed",
-          description: data.message || "Invalid username or password.",
-          variant: "destructive",
-        });
+        toast.error(data.message || "Invalid username or password.");
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to authenticate. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("Failed to authenticate. Please try again.");
     } finally {
       setIsLoading(false);
     }

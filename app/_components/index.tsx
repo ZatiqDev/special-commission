@@ -4,13 +4,13 @@ import { useState, useEffect, useTransition, useCallback } from "react";
 import { DollarSign, TrendingUp, Users, Activity } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MetricsCard } from "@/components/dashboard/MetricsCard";
-import { DataTable } from "@/components/dashboard/DataTable";
-import { DashboardFilters } from "@/components/dashboard/DashboardFilters";
-import { Header } from "@/components/layout/Header";
+import { MetricsCard } from "@/components/dashboard/metrics-card";
+import { DataTable } from "@/components/dashboard/data-table";
+import { DashboardFilters } from "@/components/dashboard/dashboard-filters";
 import { fetchCommissionData } from "@/services/api";
 import { DashboardFilters as Filters, SubscriptionRecord, ApiResponse } from "@/types/api";
 import { useToast } from "@/hooks/use-toast";
+import { Header } from "@/components/layout/header";
 
 const Index = () => {
   const { toast } = useToast();
@@ -203,7 +203,7 @@ const Index = () => {
               </TabsList>
               
               <TabsContent value="first-time">
-                <Card>
+                <Card >
                   <CardHeader>
                     <CardTitle>First Time Subscriptions</CardTitle>
                   </CardHeader>

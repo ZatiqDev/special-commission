@@ -17,7 +17,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { SubscriptionRecord } from "@/types/api";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 
 interface DataTableProps {
   data: SubscriptionRecord[];
@@ -25,7 +25,20 @@ interface DataTableProps {
 
 export const DataTable = ({ data }: DataTableProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
   const itemsPerPage = 20;
+
+  // Check if mobile on mount and window resize
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // Calculate pagination
   const totalPages = Math.ceil(data.length / itemsPerPage);
@@ -114,8 +127,8 @@ export const DataTable = ({ data }: DataTableProps) => {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-muted-foreground">
+        <div className="flex flex-col xl:flex-row gap-4 items-center justify-between">
+          <div className="text-sm text-muted-foreground text-center xl:text-left text-nowrap">
             Showing {startIndex + 1} to {Math.min(endIndex, data.length)} of {data.length} entries
           </div>
           
@@ -128,37 +141,81 @@ export const DataTable = ({ data }: DataTableProps) => {
                 />
               </PaginationItem>
               
-              {/* Page Numbers */}
-              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                let pageNumber;
-                if (totalPages <= 5) {
-                  pageNumber = i + 1;
-                } else if (currentPage <= 3) {
-                  pageNumber = i + 1;
-                } else if (currentPage >= totalPages - 2) {
-                  pageNumber = totalPages - 4 + i;
+              {/* Simple page number logic */}
+              {(() => {
+                const pages = [];
+                const maxVisiblePages = isMobile ? 3 : 5;
+                
+                if (totalPages <= maxVisiblePages) {
+                  // Show all pages if total is small
+                  for (let i = 1; i <= totalPages; i++) {
+                    pages.push(i);
+                  }
                 } else {
-                  pageNumber = currentPage - 2 + i;
+                  // Always show first page
+                  pages.push(1);
+                  
+                  // Calculate the range around current page
+                  let start = Math.max(2, currentPage - 1);
+                  let end = Math.min(totalPages - 1, currentPage + 1);
+                  
+                  // Adjust for mobile to show fewer pages
+                  if (isMobile) {
+                    if (currentPage <= 2) {
+                      start = 2;
+                      end = 2;
+                    } else if (currentPage >= totalPages - 1) {
+                      start = totalPages - 1;
+                      end = totalPages - 1;
+                    } else {
+                      start = currentPage;
+                      end = currentPage;
+                    }
+                  }
+                  
+                  // Add ellipsis if needed
+                  if (start > 2) {
+                    pages.push('...');
+                  }
+                  
+                  // Add middle pages
+                  for (let i = start; i <= end; i++) {
+                    pages.push(i);
+                  }
+                  
+                  // Add ellipsis if needed
+                  if (end < totalPages - 1) {
+                    pages.push('...');
+                  }
+                  
+                  // Always show last page
+                  if (totalPages > 1) {
+                    pages.push(totalPages);
+                  }
                 }
                 
-                return (
-                  <PaginationItem key={pageNumber}>
-                    <PaginationLink
-                      onClick={() => setCurrentPage(pageNumber)}
-                      isActive={currentPage === pageNumber}
-                      className="cursor-pointer"
-                    >
-                      {pageNumber}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              })}
-              
-              {totalPages > 5 && currentPage < totalPages - 2 && (
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              )}
+                return pages.map((page, index) => {
+                  if (page === '...') {
+                    return (
+                      <PaginationItem key={`ellipsis-${index}`} className="hidden sm:inline-flex">
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+                  
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        onClick={() => setCurrentPage(page as number)}
+                        isActive={currentPage === page}
+                        className="cursor-pointer"
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                });
+              })()}
               
               <PaginationItem>
                 <PaginationNext 
