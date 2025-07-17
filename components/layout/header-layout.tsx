@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/auth-context';
 import { LogOut, User } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-export const Header = () => {
+export const HeaderLayout = () => {
   const { user, logout } = useAuth();
   const { toast } = useToast();
 

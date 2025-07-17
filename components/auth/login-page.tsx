@@ -17,7 +17,7 @@ interface LoginProps {
   onLogin: (user: User) => void;
 }
 
-export const Login = ({ onLogin }: LoginProps) => {
+export const LoginPage = ({ onLogin }: LoginProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);

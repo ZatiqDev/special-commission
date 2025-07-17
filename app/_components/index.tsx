@@ -10,7 +10,7 @@ import { DashboardFilters } from "@/components/dashboard/dashboard-filters";
 import { fetchCommissionData } from "@/services/api";
 import { DashboardFilters as Filters, SubscriptionRecord, ApiResponse } from "@/types/api";
 import { useToast } from "@/hooks/use-toast";
-import { Header } from "@/components/layout/header";
+import { HeaderLayout } from "@/components/layout/header-layout";
 
 const Index = () => {
   const { toast } = useToast();
@@ -110,7 +110,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <HeaderLayout />
       <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Header */}
