@@ -94,13 +94,13 @@ export const LoginPage = ({ onLogin }: LoginProps) => {
             </Button>
           </form>
           
-          <div className="mt-6 p-4 bg-muted rounded-lg">
+          {/* <div className="mt-6 p-4 bg-muted rounded-lg">
             <p className="text-sm text-muted-foreground mb-2">Demo Credentials:</p>
             <div className="text-xs space-y-1">
               <div><strong>Admin:</strong> admin / admin123</div>
               <div><strong>User:</strong> user / user123</div>
             </div>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>

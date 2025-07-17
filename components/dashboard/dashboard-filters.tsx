@@ -59,7 +59,7 @@ export const DashboardFilters = ({
       <h3 className="text-lg font-medium">Filters</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <Label htmlFor="promo_id">Promo ID</Label>
           <Input
             id="promo_id"
@@ -67,7 +67,7 @@ export const DashboardFilters = ({
             value={filters.promo_id || ""}
             onChange={(e) => handlePromoIdChange(e.target.value)}
           />
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <Label>From Date</Label>
